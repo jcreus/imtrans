@@ -1,6 +1,8 @@
 <html>
 <head>
 <script type="text/javascript" src="chunks.js"></script>
+<script type="text/javascript" src="bas64.js"></script>
+<script type="text/javascript" src="canvas2image.js"></script>
 <script type="text/javascript">
 
 Function.prototype.bind = function(scope) {
@@ -30,31 +32,9 @@ trans.prototype.loadImage = function () {
 
 trans.prototype.transform = function () {
 	WIDTH = HEIGHT = 32;
-        this.canvas.width = imW;
-	this.canvas.height = imH;
-	/*
-	this.context.drawImage(this.im,0,0);
-	var chunks = [];
-	// Trossos d'alçada
-	for (var r=0; r<this.canvas.height; r += HEIGHT) {
-		var tmplist = [];
-		for (var h=0; h<this.canvas.width; h += WIDTH) { // Trossos horitzontals
-			var data = this.context.getImageData(h,r,h+WIDTH,r+HEIGHT).data;
-			var sum = 0;
-			var rg = 0;
-			var g = 0;
-			var b = 0;
-			for (var i=0; i<data.length; i += 4) {
-				rg += data[i];
-				g += data[i+1];
-				b += data[i+2];
-				sum += 1;
-			}
-			tmplist[tmplist.length] = [Math.round(rg/sum),Math.round(g/sum),Math.round(b/sum)];
-		}
-		chunks[chunks.length] = tmplist;
-	}
-	canvas.width = canvas.width;*/
+        this.canvas.width = imW-10*chunks[0].length;
+	this.canvas.height = imH-10*chunks.length;
+
 	// dibuixem
 	for (var row=0; row < chunks.length; row++) {
 		for (var chunk=0; chunk < chunks[row].length; chunk++) {
@@ -66,6 +46,7 @@ trans.prototype.transform = function () {
 			this.context.fill();
 		}
 	}
+        Canvas2Image.saveAsJPEG(this.canvas);
 };
 
 window.onload = function () { new trans("../RomaMedieval/DSC04128.JPG"); };
