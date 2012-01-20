@@ -1,0 +1,78 @@
+<html>
+<head>
+<script type="text/javascript" src="chunks.js"></script>
+<script type="text/javascript">
+
+Function.prototype.bind = function(scope) {
+  var _f = this;
+  
+  return function() {
+    return _f.apply(scope, arguments);
+  }
+}
+
+trans = function (image) {
+	this.image = image;
+	this.setup();
+	this.loadImage();
+};
+
+trans.prototype.setup = function () {
+	this.canvas = document.getElementById("canvas");
+	this.context = this.canvas.getContext("2d");
+};
+
+trans.prototype.loadImage = function () {
+	//this.im = new Image();
+	//this.im.src = this.image;
+	this.transform(); //this.im.onload = 
+};
+
+trans.prototype.transform = function () {
+	WIDTH = HEIGHT = 32;
+        this.canvas.width = imW;
+	this.canvas.height = imH;
+	/*
+	this.context.drawImage(this.im,0,0);
+	var chunks = [];
+	// Trossos d'alçada
+	for (var r=0; r<this.canvas.height; r += HEIGHT) {
+		var tmplist = [];
+		for (var h=0; h<this.canvas.width; h += WIDTH) { // Trossos horitzontals
+			var data = this.context.getImageData(h,r,h+WIDTH,r+HEIGHT).data;
+			var sum = 0;
+			var rg = 0;
+			var g = 0;
+			var b = 0;
+			for (var i=0; i<data.length; i += 4) {
+				rg += data[i];
+				g += data[i+1];
+				b += data[i+2];
+				sum += 1;
+			}
+			tmplist[tmplist.length] = [Math.round(rg/sum),Math.round(g/sum),Math.round(b/sum)];
+		}
+		chunks[chunks.length] = tmplist;
+	}
+	canvas.width = canvas.width;*/
+	// dibuixem
+	for (var row=0; row < chunks.length; row++) {
+		for (var chunk=0; chunk < chunks[row].length; chunk++) {
+			var c = chunks[row][chunk];
+			this.context.fillStyle = "rgba("+c.join(",")+",0.6)";
+			this.context.beginPath();
+			this.context.arc(chunk*WIDTH-10*chunk, row*HEIGHT-10*row, WIDTH/2, 0, Math.PI*2, true);
+			this.context.closePath();
+			this.context.fill();
+		}
+	}
+};
+
+window.onload = function () { new trans("../RomaMedieval/DSC04128.JPG"); };
+
+</script>
+</head>
+<body>
+<canvas id="canvas">Necessites un navegador modern!</canvas>
+</body>
+</html>
